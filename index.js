@@ -99,6 +99,7 @@ class Server {
 
     const otherpeers = [];
     for (const peerId in this.room[peer.ip]) {
+      console.log(this.room[peer.ip][peerId].getInfo());
       otherpeers.push(this.room[peer.ip][peerId].getInfo());
     }
 

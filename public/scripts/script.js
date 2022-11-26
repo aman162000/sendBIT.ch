@@ -26,14 +26,12 @@ class Events {
   }
 }
 
-
 Events.on("display-name", (e) => {
   const me = e.detail.message;
   const $displayName = $("displayName");
   $displayName.textContent = "You are known as " + me.displayName;
   $displayName.title = me.deviceName;
 });
-
 
 let c = document.createElement("canvas");
 document.body.appendChild(c);
@@ -97,10 +95,9 @@ class PeersUI {
   }
   onPeerJoined(peer) {
     if ($(peer.id)) return; // peer already exists
-    console.log(peer);
     const peerUI = new PeerUI(peer);
     otherDeviceLoad(peerUI.$el);
-    console.log("PEER JOINED")
+    console.log("PEER JOINED");
   }
   onPeers(peers) {
     this.clearPeers();
@@ -148,9 +145,10 @@ class PeerUI {
     this.bindListeners(this.$el);
   }
   initDom() {
+    
     let divElement = document.createElement("div");
     divElement.id = this.peer.id;
-    divElement.className =  "element peer";
+    divElement.className = "element peer";
     let btn = document.createElement("button");
     btn.className = "btn btn-other-devices";
     let image = document.createElement("img");
@@ -160,18 +158,21 @@ class PeerUI {
     let i = document.createElement("i");
     i.textContent = this.deviceName();
     btn.appendChild(image);
-    let input = document.createElement("input")
-    btn.addEventListener('click',()=>{
-      input.click()
-    })
-    input.type = 'file'
-    input.setAttribute("multiple",'')
-    divElement.append(input)
+    let input = document.createElement("input");
+    btn.addEventListener("click", () => {
+      input.click();
+    });
+    input.type = "file";
+    input.setAttribute("multiple", "");
+    divElement.append(input);
     divElement.appendChild(btn);
     divElement.appendChild(p);
-    divElement.appendChild(i);  
-
+    divElement.appendChild(i);
+    input.insertAdjacentHTML('afterend', "<div class='custom-progress'> <div class='circle'></div>  <div class='circle right'></div> </div>")
+    divElement.ui = this
     this.$el = divElement;
+    this.$progress = divElement.querySelector('.custom-progress');
+  
   }
   bindListeners(el) {
     el.querySelector("input").addEventListener("change", (e) =>
@@ -192,7 +193,7 @@ class PeerUI {
     return this.peer.name.displayName;
   }
   deviceName() {
-    return this.peer.name.device +","+ this.peer.name.os;
+    return this.peer.name.device + "," + this.peer.name.os;
   }
   icon() {
     const device = this.peer.name.device || this.peer.name;
@@ -213,6 +214,23 @@ class PeerUI {
     });
     $input.value = null; // reset input
   }
+  setProgress(progress) {
+    if (progress > 0) {
+        this.$el.setAttribute('transfer', '1');
+    }
+    if (progress > 0.5) {
+        this.$progress.classList.add('over50');
+    } else {
+        this.$progress.classList.remove('over50');
+    }
+    const degrees = `rotate(${360 * progress}deg)`;
+    this.$progress.style.setProperty('--progress', degrees);
+    if (progress >= 1) {
+        this.setProgress(0);
+        this.$el.removeAttribute('transfer');
+    }
+}
+
   onDrop(e) {
     e.preventDefault();
     const files = e.dataTransfer.files;
@@ -247,158 +265,150 @@ class PeerUI {
   }
 }
 
-
 class Dialog {
   constructor(id) {
-      this.$el = $(id);
-      this.$el.querySelectorAll('[close]').forEach(el => el.addEventListener('click', e => this.hide()))
-      this.$autoFocus = this.$el.querySelector('[autofocus]');
+    this.$el = $(id);
+    this.$el
+      .querySelectorAll("[close]")
+      .forEach((el) => el.addEventListener("click", (e) => this.hide()));
+    this.$autoFocus = this.$el.querySelector("[autofocus]");
   }
 
   show() {
-      this.$el.setAttribute('show', 1);
-      if (this.$autoFocus) this.$autoFocus.focus();
+    this.$el.setAttribute("show", 1);
+    if (this.$autoFocus) this.$autoFocus.focus();
   }
 
   hide() {
-      this.$el.removeAttribute('show');
-      document.activeElement.blur();
-      window.blur();
+    this.$el.removeAttribute("show");
+    document.activeElement.blur();
+    window.blur();
   }
 }
 
 class NetworkStatusUI {
-
   constructor() {
-      window.addEventListener('offline', e => this.showOfflineMessage(), false);
-      window.addEventListener('online', e => this.showOnlineMessage(), false);
-      if (!navigator.onLine) this.showOfflineMessage();
+    window.addEventListener("offline", (e) => this.showOfflineMessage(), false);
+    window.addEventListener("online", (e) => this.showOnlineMessage(), false);
+    if (!navigator.onLine) this.showOfflineMessage();
   }
 
   showOfflineMessage() {
-      Events.fire('notify-user', 'You are offline');
+    Events.fire("notify-user", "You are offline");
   }
 
   showOnlineMessage() {
-      Events.fire('notify-user', 'You are back online');
+    Events.fire("notify-user", "You are back online");
   }
 }
 
 class WebShareTargetUI {
   constructor() {
-      const parsedUrl = new URL(window.location);
-      const title = parsedUrl.searchParams.get('title');
-      const text = parsedUrl.searchParams.get('text');
-      const url = parsedUrl.searchParams.get('url');
+    const parsedUrl = new URL(window.location);
+    const title = parsedUrl.searchParams.get("title");
+    const text = parsedUrl.searchParams.get("text");
+    const url = parsedUrl.searchParams.get("url");
 
-      let shareTargetText = title ? title : '';
-      shareTargetText += text ? shareTargetText ? ' ' + text : text : '';
+    let shareTargetText = title ? title : "";
+    shareTargetText += text ? (shareTargetText ? " " + text : text) : "";
 
-      if(url) shareTargetText = url; // We share only the Link - no text. Because link-only text becomes clickable.
+    if (url) shareTargetText = url; // We share only the Link - no text. Because link-only text becomes clickable.
 
-      if (!shareTargetText) return;
-      window.shareTargetText = shareTargetText;
-      history.pushState({}, 'URL Rewrite', '/');
-      console.log('Shared Target Text:', '"' + shareTargetText + '"');
+    if (!shareTargetText) return;
+    window.shareTargetText = shareTargetText;
+    history.pushState({}, "URL Rewrite", "/");
+    console.log("Shared Target Text:", '"' + shareTargetText + '"');
   }
 }
 
 class ReceiveDialog extends Dialog {
-
   constructor() {
-      super('receiveDialog');
-      Events.on('file-received', e => {
-          this.nextFile(e.detail);
-          window.blop.play();
-      });
-      this.filesQueue = [];
+    super("receiveDialog");
+    Events.on("file-received", (e) => {
+      this.nextFile(e.detail);
+      window.blop.play();
+    });
+    this.filesQueue = [];
   }
 
   nextFile(nextFile) {
-      if (nextFile) this.filesQueue.push(nextFile);
-      if (this.busy) return;
-      this.busy = true;
-      const file = this.filesQueue.shift();
-      this.displayFile(file);
+    if (nextFile) this.filesQueue.push(nextFile);
+    if (this.busy) return;
+    this.busy = true;
+    const file = this.filesQueue.shift();
+    this.displayFile(file);
   }
 
   dequeueFile() {
-      if (!this.filesQueue.length) { // nothing to do
-          this.busy = false;
-          return;
-      }
-      // dequeue next file
-      setTimeout(_ => {
-          this.busy = false;
-          this.nextFile();
-      }, 300);
+    if (!this.filesQueue.length) {
+      // nothing to do
+      this.busy = false;
+      return;
+    }
+    // dequeue next file
+    setTimeout((_) => {
+      this.busy = false;
+      this.nextFile();
+    }, 300);
   }
 
   displayFile(file) {
-      const $a = this.$el.querySelector('#download');
-      const url = URL.createObjectURL(file.blob);
-      $a.href = url;
-      $a.download = file.name;
+    const $a = this.$el.querySelector("#download");
+    const url = URL.createObjectURL(file.blob);
+    $a.href = url;
+    $a.download = file.name;
 
-      if(this.autoDownload()){
-          $a.click()
-          return
-      }
-      if(file.mime.split('/')[0] === 'image'){
-          console.log('the file is image');
-          this.$el.querySelector('.preview').style.visibility = 'inherit';
-          this.$el.querySelector("#img-preview").src = url;
-      }
+    
+    if (file.mime.split("/")[0] === "image") {
+      this.$el.querySelector(".preview").style.visibility = "inherit";
+      this.$el.querySelector("#img-preview").src = url;
+    }
 
-      this.$el.querySelector('#fileName').textContent = file.name;
-      this.$el.querySelector('#fileSize').textContent = this.formatFileSize(file.size);
-      this.show();
+    this.$el.querySelector("#fileName").textContent = file.name;
+    this.$el.querySelector("#fileSize").textContent = this.formatFileSize(
+      file.size
+    );
+    this.show();
 
-      if (window.isDownloadSupported) return;
-      // fallback for iOS
-      $a.target = '_blank';
-      const reader = new FileReader();
-      reader.onload = e => $a.href = reader.result;
-      reader.readAsDataURL(file.blob);
+    if (window.isDownloadSupported) return;
+    // fallback for iOS
+    $a.target = "_blank";
+    const reader = new FileReader();
+    reader.onload = (e) => ($a.href = reader.result);
+    reader.readAsDataURL(file.blob);
   }
 
   formatFileSize(bytes) {
-      if (bytes >= 1e9) {
-          return (Math.round(bytes / 1e8) / 10) + ' GB';
-      } else if (bytes >= 1e6) {
-          return (Math.round(bytes / 1e5) / 10) + ' MB';
-      } else if (bytes > 1000) {
-          return Math.round(bytes / 1000) + ' KB';
-      } else {
-          return bytes + ' Bytes';
-      }
+    if (bytes >= 1e9) {
+      return Math.round(bytes / 1e8) / 10 + " GB";
+    } else if (bytes >= 1e6) {
+      return Math.round(bytes / 1e5) / 10 + " MB";
+    } else if (bytes > 1000) {
+      return Math.round(bytes / 1000) + " KB";
+    } else {
+      return bytes + " Bytes";
+    }
   }
 
   hide() {
-      this.$el.querySelector('.preview').style.visibility = 'hidden';
-      this.$el.querySelector("#img-preview").src = "";
-      super.hide();
-      this._dequeueFile();
+    this.$el.querySelector(".preview").style.visibility = "hidden";
+    this.$el.querySelector("#img-preview").src = "";
+    super.hide();
+    this._dequeueFile();
   }
 
-
-  autoDownload(){
-      return !this.$el.querySelector('#autoDownload').checked
-  }
 }
-
 
 class SendBit {
   constructor() {
-      const server = new ServerConnection();
-      const peers = new PeersManager(server);
-      const peersUI = new PeersUI();
-      Events.on('load', e => {
-          const networkStatusUI = new NetworkStatusUI();
-          const webShareTargetUI = new WebShareTargetUI();
-          const receiveDialog = new ReceiveDialog();
-
-      });
+    const server = new ServerConnection();
+    const peers = new PeersManager(server);
+    const peersUI = new PeersUI();
+    Events.on("load", (e) => {
+      const networkStatusUI = new NetworkStatusUI();
+      const webShareTargetUI = new WebShareTargetUI();
+      const receiveDialog = new ReceiveDialog();
+    });
   }
 }
 

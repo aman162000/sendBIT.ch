@@ -348,7 +348,7 @@ class ServerConnection {
           this.peers[peer.id].refresh();
           return;
         }
-        if (window.isRtcSupported && peer.rtcSupported) {
+        if (window.isRtcSupported && peer.RTCSupported) {
           this.peers[peer.id] = new RTCPeer(this.server, peer.id);
         } else {
           this.peers[peer.id] = new WSPeer(this.server, peer.id);
@@ -359,7 +359,6 @@ class ServerConnection {
       this.peers[peerId].send(message);
     }
     onFilesSelected(message) {
-      console.log(this.peers,message);
       this.peers[message.to].sendFiles(message.files);
     }
     onSendText(message) {

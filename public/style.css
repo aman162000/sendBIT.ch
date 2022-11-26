@@ -116,6 +116,7 @@ input[type="checkbox"] {
   left: 60%;
   top: 10%;
 }
+
 .element {
   text-align: center;
 }
@@ -150,11 +151,178 @@ input[type="checkbox"] {
   font-size: 20px;
   color: rgb(104, 104, 104);
 }
+.custom-progress {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 0px;
+  clip: rect(0px, 80px, 80px, 40px);
+  --progress: rotate(0deg);
+  transition: transform 200ms;
+}
+.circle {
+  width: 72px;
+  height: 72px;
+  border: 4px solid var(#ef7423);
+  border-radius: 40px;
+  position: absolute;
+  clip: rect(0px, 40px, 80px, 0px);
+  will-change: transform;
+  transform: var(--progress);
+}
+
+.dialog .paper {
+  background-color: var(--bg-color);
+}
+
+.dialog .bg-overlay {
+  background: rgba(0, 0, 0, 0.61);
+  z-index: 10;
+  transition: opacity 300ms;
+  will-change: opacity;
+  padding: 16px;
+}
+
+.dialog .paper {
+  z-index: 3;
+  background: var(--bg-color);
+  border-radius: 8px;
+  padding: 16px 24px;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  transition: transform 300ms;
+  will-change: transform;
+}
+[shadow="2"] {
+  box-shadow: 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%),
+    0 2px 4px -1px rgb(0 0 0 / 40%);
+}
+
+.dialog:not([show]) {
+  pointer-events: none;
+}
+
+.dialog:not([show]) .paper {
+  transform: scale(0.1);
+}
+
+.dialog:not([show]) .bg-overlay {
+  opacity: 0;
+}
+
+.dialog .row-reverse > .button {
+  margin-top: 16px;
+  margin-left: 8px;
+}
+
+.dialog a {
+  color: var(--primary-color);
+}
+
+/* Receive Dialog */
+#receiveDialog .row {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+/* Receive Text Dialog */
+
+#receiveTextDialog #text {
+  width: 100%;
+  word-break: break-all;
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-user-select: all;
+  -moz-user-select: all;
+  user-select: all;
+  white-space: pre-wrap;
+}
+
+#receiveTextDialog #text a {
+  cursor: pointer;
+}
+
+#receiveTextDialog #text a:hover {
+  text-decoration: underline;
+}
+
+#receiveTextDialog h3 {
+  /* Select the received text when double-clicking the dialog */
+  user-select: none;
+  pointer-events: none;
+}
+.bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.button {
+  padding: 0 16px;
+  box-sizing: border-box;
+  min-height: 36px;
+  min-width: 100px;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  background: inherit;
+  color: var(--primary-color);
+}
+
+.button,
+.icon-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  touch-action: manipulation;
+  border: none;
+  outline: none;
+}
+
+.button:before:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.button:hover:before {
+  opacity: 0.1;
+}
+
+.button:before {
+  border-radius: 8px;
+}
+
+.button:focus:before {
+  opacity: 0.2;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
 
 @media (prefers-color-scheme: dark) {
   body {
     --text-color: #fff;
-    --bg-color: rgba(13, 13, 13, 0.819);;
+    --bg-color: rgba(13, 13, 13, 0.819);
   }
 
   body.light-theme {
@@ -338,141 +506,3 @@ canvas {
   display: none;
 }
 
-.dialog .bg-overlay{
-  background: rgba(0, 0, 0, 0.61);
-  z-index: 10;
-  transition: opacity 300ms;
-  will-change: opacity;
-  padding: 16px;
-}
-
-.dialog .paper {
-  z-index: 3;
-  background: white;
-  border-radius: 8px;
-  padding: 16px 24px;
-  width: 100%;
-  max-width: 400px;
-  box-sizing: border-box;
-  transition: transform 300ms;
-  will-change: transform;
-}
-
-.dialog:not([show]) {
-  pointer-events: none;
-}
-
-.dialog:not([show]) .paper {
-  transform: scale(0.1);
-}
-
-.dialog:not([show]) .bg-overlay {
-  opacity: 0;
-}
-
-.dialog .row-reverse > .button {
-  margin-top: 16px;
-  margin-left: 8px;
-}
-
-.dialog a {
-  color: var(--primary-color);
-}
-
-/* Receive Dialog */
-#receiveDialog .row {
-  margin-top: 24px;
-  margin-bottom: 8px;
-}
-
-/* Receive Text Dialog */
-
-#receiveTextDialog #text {
-  width: 100%;
-  word-break: break-all;
-  max-height: 300px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-user-select: all;
-  -moz-user-select: all;
-  user-select: all;
-  white-space: pre-wrap;
-}
-
-#receiveTextDialog #text a {
-  cursor: pointer;
-}
-
-#receiveTextDialog #text a:hover {
-  text-decoration: underline;
-}
-
-#receiveTextDialog h3 {
-  /* Select the received text when double-clicking the dialog */
-  user-select: none;
-  pointer-events: none;
-}
-.bg-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.button {
-  padding: 0 16px;
-  box-sizing: border-box;
-  min-height: 36px;
-  min-width: 100px;
-  font-size: 14px;
-  line-height: 24px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  cursor: pointer;
-  user-select: none;
-  background: inherit;
-  color: var(--primary-color);
-}
-
-.button,
-.icon-button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  touch-action: manipulation;
-  border: none;
-  outline: none;
-}
-
-.button:before:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: currentColor;
-  opacity: 0;
-  transition: opacity 300ms;
-}
-
-.button:hover:before {
-  opacity: 0.1;
-}
-
-.button:before {
-  border-radius: 8px;
-}
-
-.button:focus:before {
-  opacity: 0.2;
-}
-
-button::-moz-focus-inner {
-  border: 0;
-}
