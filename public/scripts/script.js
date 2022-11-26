@@ -154,6 +154,8 @@ class PeerUI {
     let image = document.createElement("img");
     image.setAttribute("src", this.icon());
     let p = document.createElement("p");
+    let transfer = document.createElement("i");
+    transfer.classList.add("transfer");
     p.textContent = this.displayName();
     let i = document.createElement("i");
     i.textContent = this.deviceName();
@@ -167,8 +169,8 @@ class PeerUI {
     divElement.append(input);
     divElement.appendChild(btn);
     divElement.appendChild(p);
+    divElement.appendChild(transfer);
     divElement.appendChild(i);
-    input.insertAdjacentHTML('afterend', "<div class='custom-progress'> <div class='circle'></div>  <div class='circle right'></div> </div>")
     divElement.ui = this
     this.$el = divElement;
     this.$progress = divElement.querySelector('.custom-progress');
@@ -215,19 +217,9 @@ class PeerUI {
     $input.value = null; // reset input
   }
   setProgress(progress) {
-    if (progress > 0) {
-        this.$el.setAttribute('transfer', '1');
-    }
-    if (progress > 0.5) {
-        this.$progress.classList.add('over50');
-    } else {
-        this.$progress.classList.remove('over50');
-    }
-    const degrees = `rotate(${360 * progress}deg)`;
-    this.$progress.style.setProperty('--progress', degrees);
-    if (progress >= 1) {
-        this.setProgress(0);
-        this.$el.removeAttribute('transfer');
+    $$(".transfer").innerText = `Transfering ${progress.toFixed(2)*100}% \n`
+    if(progress>=1){
+      $$(".transfer").innerText=""  
     }
 }
 
@@ -326,7 +318,6 @@ class ReceiveDialog extends Dialog {
     super("receiveDialog");
     Events.on("file-received", (e) => {
       this.nextFile(e.detail);
-      window.blop.play();
     });
     this.filesQueue = [];
   }
