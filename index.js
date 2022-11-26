@@ -1,11 +1,30 @@
 const parse = require("ua-parser-js");
-const uq = require("./uniquename");
+const { uniqueNamesGenerator, starWars } = require("unique-names-generator");
+const express = require("express");
+const http = require("http");
+var process = require("process");
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.static("public"));
+
+app.use(function (req, res) {
+  res.redirect("/");
+});
+
+app.get("/", (req, res) => {
+  res.sendFile("index.html");
+});
+
+const server = http.createServer(app);
+server.listen(port);
 
 class Server {
-  constructor(port) {
+  constructor() {
     const WebSocket = require("ws");
 
-    this.wss = new WebSocket.Server({ port: port });
+    this.wss = new WebSocket.Server({ server });
     this.wss.on("connection", (socket, request) =>
       this.onConnection(new Peer(socket, request))
     );
@@ -25,8 +44,7 @@ class Server {
     )
       return;
     response.peerId = Peer.uuid();
-
-    headers.push(`Set-Cookie:peerid=${response.peerId};SameSite=Strict;Secure`);
+    headers.push(`Set-Cookie:peerid=${response.peerId}`);
   }
 
   onConnection(peer) {
@@ -49,7 +67,7 @@ class Server {
       return;
     }
 
-    switch (message.type) {
+    switch (msg.type) {
       case "disconnect":
         this.leaveRoom(sender);
         break;
@@ -71,7 +89,7 @@ class Server {
     if (!this.room[peer.ip]) {
       this.room[peer.ip] = {};
     }
-    for (const peerId in this.room[peer.id]) {
+    for (const peerId in this.room[peer.ip]) {
       const otherpeer = this.room[peer.ip][peerId];
       this.send(otherpeer, {
         type: "peer-joined",
@@ -137,8 +155,8 @@ class Peer {
   constructor(socket, request) {
     this.socket = socket;
     this.setIP(request);
-    this.setName(request);
     this.setPeerId(request);
+    this.setName(request);
     this.isRTCSupported = request.url.indexOf("rtc") > -1;
     this.timerId = 0;
     this.lastBeat = Date.now();
@@ -149,6 +167,9 @@ class Peer {
       this.ip = request.headers["x-forwarded-for"].split(/\s*,\s*/)[0];
     } else {
       this.ip = request.connection.remoteAddress;
+    }
+    if (this.ip == "::1" || this.ip == "::ffff:127.0.0.1") {
+      this.ip = "127.0.0.1";
     }
   }
   setPeerId(request) {
@@ -171,8 +192,13 @@ class Peer {
     if (!device) {
       device = "Unknown user";
     }
-
-    const displayName = uq();
+    const displayName = uniqueNamesGenerator({
+      length: 1,
+      separator: " ",
+      dictionaries: [starWars],
+      style: "capital",
+      seed: hashCode(this.id),
+    });
 
     this.name = {
       model: userAgent.device.model,
@@ -215,5 +241,15 @@ class Peer {
     return uuid;
   }
 }
-
-const server = new Server(process.env.PORT || 3000);
+const hashCode = (str) => {
+  var hash = 0,
+    i,
+    chr;
+  for (i = 0; i < str.length; i++) {
+    chr = str.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0;
+  }
+  return hash;
+};
+new Server();
