@@ -14,7 +14,7 @@ body {
 
 body.dark-theme {
   --text-color: #fff;
-  --bg-color: #000;
+  --bg-color: rgba(13, 13, 13, 0.819);
 }
 
 body {
@@ -22,7 +22,6 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
-
 
 .server {
   text-align: center;
@@ -33,18 +32,18 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.server-logo>img {
+.server-logo > img {
   height: 80px;
   width: 80px;
 }
 
-.server-logo>p {
+.server-logo > p {
   font-size: 12px;
   color: #ff6600;
   font-weight: 600;
 }
 
-.server-logo>h6 {
+.server-logo > h6 {
   font-size: max(10px, 15px);
 }
 
@@ -84,7 +83,7 @@ input[type="file"] {
   position: absolute;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   display: none;
 }
 
@@ -93,10 +92,12 @@ input[type=checkbox] {
   padding: 10px;
 }
 
-#displayName #infoicon #modeicon, #infoicon{
+#displayName #infoicon #modeicon,
+#infoicon {
   color: var(--text-color);
 }
-#left-space, #right-space{
+#left-space,
+#right-space {
   width: 30%;
   height: 80%;
   display: flex;
@@ -105,27 +106,29 @@ input[type=checkbox] {
   align-items: center;
   z-index: 10;
 }
-#left-space{
+#left-space {
   position: absolute;
   left: 10%;
   top: 10%;
 }
-#right-space{
+#right-space {
   position: absolute;
   left: 60%;
   top: 10%;
 }
-.element{
+.element {
   text-align: center;
 }
-#left-space p, #right-space p{
+#left-space p,
+#right-space p {
   margin: 0;
 }
-#left-space i, #right-space i{
+#left-space i,
+#right-space i {
   font-size: 13px;
   color: grey;
 }
-.btn-other-devices{
+.btn-other-devices {
   background-color: #ff6600 !important;
   cursor: pointer;
   border: none;
@@ -134,16 +137,16 @@ input[type=checkbox] {
   margin-top: 65px;
   z-index: 100;
 }
-.btn-other-devices:hover{
-  transition: transform .3s ease-in-out; 
+.btn-other-devices:hover {
+  transition: transform 0.3s ease-in-out;
   background-color: #e69159 !important;
 }
-.footerText{
+.footerText {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.footerText h4{
+.footerText h4 {
   font-size: 20px;
   color: rgb(104, 104, 104);
 }
@@ -151,7 +154,7 @@ input[type=checkbox] {
 @media (prefers-color-scheme: dark) {
   body {
     --text-color: #fff;
-    --bg-color: #000;
+    --bg-color: rgba(13, 13, 13, 0.819);;
   }
 
   body.light-theme {
@@ -160,99 +163,101 @@ input[type=checkbox] {
   }
 }
 
-  @media only screen and (min-width: 315px) and (max-width: 550px){
-  .server-logo>img {
+@media only screen and (min-width: 315px) and (max-width: 550px) {
+  .server-logo > img {
     height: 50px;
     width: 50px;
   }
-  
-  .server-logo>p {
+
+  .server-logo > p {
     font-size: 10px;
     font-weight: 500;
   }
-  
-  .server-logo>h6 {
+
+  .server-logo > h6 {
     font-size: max(8px, 10px);
   }
-  .btn-other-devices{
+  .btn-other-devices {
     padding: 10px !important;
     margin-top: 50px;
   }
-  #left-space{
+  #left-space {
     position: absolute;
     left: 0%;
     top: 10%;
   }
-  #right-space{
+  #right-space {
     position: absolute;
     left: 70%;
     top: 10%;
   }
-  #left-space p,#right-space p{
+  #left-space p,
+  #right-space p {
     font-size: 10px;
   }
-  #left-space i, #right-space i{
+  #left-space i,
+  #right-space i {
     font-size: 10px;
     color: grey;
   }
-  .footerText h4{
+  .footerText h4 {
     font-size: 11px;
     color: rgb(104, 104, 104);
     margin-top: 20px;
   }
 }
-  @media only screen and (min-width: 551px) and (max-width: 768px){
-  .server-logo>img {
+@media only screen and (min-width: 551px) and (max-width: 768px) {
+  .server-logo > img {
     height: 60px;
     width: 60px;
   }
-  
-  .server-logo>p {
+
+  .server-logo > p {
     font-size: 12px;
     color: #ff6600;
     font-weight: 500;
   }
-  
-  .server-logo>h6 {
+
+  .server-logo > h6 {
     font-size: max(10px, 12px);
   }
-  .btn-other-devices{
+  .btn-other-devices {
     padding: 12px !important;
     margin-top: 50px;
   }
-  #left-space{
+  #left-space {
     position: absolute;
     left: 0%;
     top: 10%;
   }
-  #right-space{
+  #right-space {
     position: absolute;
     left: 70%;
     top: 10%;
   }
-  #left-space p,#right-space p{
+  #left-space p,
+  #right-space p {
     font-size: 12px;
   }
-  .footerText h4{
+  .footerText h4 {
     font-size: 15px;
     color: rgb(104, 104, 104);
     margin-top: 20px;
   }
 }
 
-
-about{
+about {
   display: none;
 }
 
 /* about page css */
-.cross{
+.cross {
   display: flex;
   justify-content: end;
   align-items: center;
   cursor: pointer;
 }
-.cross svg{
+.cross svg {
   color: white;
   width: 2.5vw;
   height: auto;
@@ -267,31 +272,31 @@ about{
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-.logo_data{
+.logo_data {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-#server-logo-about{
+#server-logo-about {
   height: 80px;
   width: 80px;
   filter: brightness(0) invert(1);
 }
 
-.logo_data>p {
+.logo_data > p {
   color: white;
   font-size: 13px;
   font-weight: 600;
 }
-#fulllogo{
+#fulllogo {
   width: 10rem !important;
   height: auto;
 }
-a{
+a {
   text-decoration: none;
 }
-footer{
+footer {
   width: 100%;
   position: absolute;
   bottom: 2vh;
@@ -301,33 +306,173 @@ footer{
   padding: 10px;
   z-index: 10;
 }
-footer h6,.abouticons{
+footer h6,
+.abouticons {
   display: inline;
   font-size: 14px;
   color: white;
 }
-.abouticons svg{
+.abouticons svg {
   width: 14px;
   margin: 0px 2px 5px 2px;
   color: white;
 }
 
-canvas{
+canvas {
   z-index: -1;
 }
 
 /* modal css */
-.modal-footer button{
+.modal-footer button {
   background: none;
   border: none;
   color: #ff6600;
-  font-family: 'Kanit', sans-serif;
+  font-family: "Kanit", sans-serif;
   font-size: 15px;
 }
-.modal-footer button:hover{
-  color:#ef7423;
+.modal-footer button:hover {
+  color: #ef7423;
   border: #ef7423 0.5px solid;
 }
-#modalClick{
+#modalClick {
   display: none;
+}
+
+.dialog .bg-overlay{
+  background: rgba(0, 0, 0, 0.61);
+  z-index: 10;
+  transition: opacity 300ms;
+  will-change: opacity;
+  padding: 16px;
+}
+
+.dialog .paper {
+  z-index: 3;
+  background: white;
+  border-radius: 8px;
+  padding: 16px 24px;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  transition: transform 300ms;
+  will-change: transform;
+}
+
+.dialog:not([show]) {
+  pointer-events: none;
+}
+
+.dialog:not([show]) .paper {
+  transform: scale(0.1);
+}
+
+.dialog:not([show]) .bg-overlay {
+  opacity: 0;
+}
+
+.dialog .row-reverse > .button {
+  margin-top: 16px;
+  margin-left: 8px;
+}
+
+.dialog a {
+  color: var(--primary-color);
+}
+
+/* Receive Dialog */
+#receiveDialog .row {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+/* Receive Text Dialog */
+
+#receiveTextDialog #text {
+  width: 100%;
+  word-break: break-all;
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-user-select: all;
+  -moz-user-select: all;
+  user-select: all;
+  white-space: pre-wrap;
+}
+
+#receiveTextDialog #text a {
+  cursor: pointer;
+}
+
+#receiveTextDialog #text a:hover {
+  text-decoration: underline;
+}
+
+#receiveTextDialog h3 {
+  /* Select the received text when double-clicking the dialog */
+  user-select: none;
+  pointer-events: none;
+}
+.bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.button {
+  padding: 0 16px;
+  box-sizing: border-box;
+  min-height: 36px;
+  min-width: 100px;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  background: inherit;
+  color: var(--primary-color);
+}
+
+.button,
+.icon-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  touch-action: manipulation;
+  border: none;
+  outline: none;
+}
+
+.button:before:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.button:hover:before {
+  opacity: 0.1;
+}
+
+.button:before {
+  border-radius: 8px;
+}
+
+.button:focus:before {
+  opacity: 0.2;
+}
+
+button::-moz-focus-inner {
+  border: 0;
 }

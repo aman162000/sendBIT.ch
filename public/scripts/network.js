@@ -359,6 +359,7 @@ class ServerConnection {
       this.peers[peerId].send(message);
     }
     onFilesSelected(message) {
+      console.log(this.peers,message);
       this.peers[message.to].sendFiles(message.files);
     }
     onSendText(message) {

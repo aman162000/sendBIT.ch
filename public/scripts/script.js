@@ -153,7 +153,6 @@ class PeerUI {
     divElement.className =  "element peer";
     let btn = document.createElement("button");
     btn.className = "btn btn-other-devices";
-    btn.addEventListener("click", importData);
     let image = document.createElement("img");
     image.setAttribute("src", this.icon());
     let p = document.createElement("p");
@@ -162,6 +161,9 @@ class PeerUI {
     i.textContent = this.deviceName();
     btn.appendChild(image);
     let input = document.createElement("input")
+    btn.addEventListener('click',()=>{
+      input.click()
+    })
     input.type = 'file'
     input.setAttribute("multiple",'')
     divElement.append(input)
@@ -301,6 +303,91 @@ class WebShareTargetUI {
   }
 }
 
+class ReceiveDialog extends Dialog {
+
+  constructor() {
+      super('receiveDialog');
+      Events.on('file-received', e => {
+          this.nextFile(e.detail);
+          window.blop.play();
+      });
+      this.filesQueue = [];
+  }
+
+  nextFile(nextFile) {
+      if (nextFile) this.filesQueue.push(nextFile);
+      if (this.busy) return;
+      this.busy = true;
+      const file = this.filesQueue.shift();
+      this.displayFile(file);
+  }
+
+  dequeueFile() {
+      if (!this.filesQueue.length) { // nothing to do
+          this.busy = false;
+          return;
+      }
+      // dequeue next file
+      setTimeout(_ => {
+          this.busy = false;
+          this.nextFile();
+      }, 300);
+  }
+
+  displayFile(file) {
+      const $a = this.$el.querySelector('#download');
+      const url = URL.createObjectURL(file.blob);
+      $a.href = url;
+      $a.download = file.name;
+
+      if(this.autoDownload()){
+          $a.click()
+          return
+      }
+      if(file.mime.split('/')[0] === 'image'){
+          console.log('the file is image');
+          this.$el.querySelector('.preview').style.visibility = 'inherit';
+          this.$el.querySelector("#img-preview").src = url;
+      }
+
+      this.$el.querySelector('#fileName').textContent = file.name;
+      this.$el.querySelector('#fileSize').textContent = this.formatFileSize(file.size);
+      this.show();
+
+      if (window.isDownloadSupported) return;
+      // fallback for iOS
+      $a.target = '_blank';
+      const reader = new FileReader();
+      reader.onload = e => $a.href = reader.result;
+      reader.readAsDataURL(file.blob);
+  }
+
+  formatFileSize(bytes) {
+      if (bytes >= 1e9) {
+          return (Math.round(bytes / 1e8) / 10) + ' GB';
+      } else if (bytes >= 1e6) {
+          return (Math.round(bytes / 1e5) / 10) + ' MB';
+      } else if (bytes > 1000) {
+          return Math.round(bytes / 1000) + ' KB';
+      } else {
+          return bytes + ' Bytes';
+      }
+  }
+
+  hide() {
+      this.$el.querySelector('.preview').style.visibility = 'hidden';
+      this.$el.querySelector("#img-preview").src = "";
+      super.hide();
+      this._dequeueFile();
+  }
+
+
+  autoDownload(){
+      return !this.$el.querySelector('#autoDownload').checked
+  }
+}
+
+
 class SendBit {
   constructor() {
       const server = new ServerConnection();
@@ -309,6 +396,8 @@ class SendBit {
       Events.on('load', e => {
           const networkStatusUI = new NetworkStatusUI();
           const webShareTargetUI = new WebShareTargetUI();
+          const receiveDialog = new ReceiveDialog();
+
       });
   }
 }
