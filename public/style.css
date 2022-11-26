@@ -183,6 +183,13 @@ input[type="checkbox"] {
   padding: 16px;
 }
 
+#img-preview{
+  max-height: 50vh;
+  margin: auto;
+  display: block;
+}
+
+
 .dialog .paper {
   z-index: 3;
   background: var(--bg-color);
