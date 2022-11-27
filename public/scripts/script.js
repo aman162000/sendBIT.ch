@@ -33,6 +33,10 @@ Events.on("display-name", (e) => {
   $displayName.title = me.deviceName;
 });
 
+Events.on("load",()=>{
+
+
+
 let c = document.createElement("canvas");
 document.body.appendChild(c);
 let style = c.style;
@@ -40,6 +44,8 @@ style.height = "100%";
 style.position = "absolute";
 style.left = 0;
 style.top = 0;
+
+style.width="100%";
 let ctx = c.getContext("2d");
 let x, y, w, h, d;
 
@@ -82,7 +88,7 @@ window.backgroundAnimation = () => {
 
 init();
 animate();
-
+})
 //Network
 
 class PeersUI {
@@ -217,7 +223,7 @@ class PeerUI {
     $input.value = null; // reset input
   }
   setProgress(progress) {
-    $$(".transfer").innerText = `Transfering ${progress.toFixed(2)*100}% \n`
+    $$(".transfer").innerText = `Transfering ${(progress*100).toFixed(2)}% \n`
     if(progress>=1){
       $$(".transfer").innerText=""  
     }
@@ -385,7 +391,7 @@ class ReceiveDialog extends Dialog {
     this.$el.querySelector(".preview").style.visibility = "hidden";
     this.$el.querySelector("#img-preview").src = "";
     super.hide();
-    this._dequeueFile();
+    this.dequeueFile();
   }
 
 }

@@ -1,27 +1,6 @@
-
-
 let flag = 0;
 const leftSpace = document.getElementById("left-space");
 const rightSpace = document.getElementById("right-space");
-
-const createDivElement = (name, device, imgUrl) => {
-  let divElement = document.createElement("div");
-  divElement.classList.add("element");
-  let btn = document.createElement("button");
-  btn.className = "btn btn-other-devices";
-  let image = document.createElement("img");
-  image.setAttribute("src", imgUrl);
-  let p = document.createElement("p");
-  p.textContent = name;
-  let i = document.createElement("i");
-  i.textContent = device;
-  btn.appendChild(image);
-  divElement.appendChild(btn);
-  divElement.appendChild(p);
-  divElement.appendChild(i);
-
-  return divElement;
-};
 
 const otherDeviceLoad = (element) => {
   if (

@@ -9,7 +9,6 @@ body {
   transition: all 300ms ease-in;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body.dark-theme {
@@ -282,7 +281,7 @@ input[type="checkbox"] {
   cursor: pointer;
   user-select: none;
   background: inherit;
-  color: var(--primary-color);
+  color: var(--text-color);
 }
 
 .button,
