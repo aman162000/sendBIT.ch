@@ -223,7 +223,7 @@ input[type="checkbox"] {
 }
 
 .dialog a {
-  color: var(--primary-color);
+  color: var(--bg-color);
 }
 
 /* Receive Dialog */
