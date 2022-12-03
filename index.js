@@ -4,9 +4,37 @@ const express = require("express");
 const http = require("http");
 var process = require("process");
 
+var process = require('process')
+// Handle SIGINT
+process.on('SIGINT', () => {
+  console.info("SIGINT Received, exiting...")
+  process.exit(0)
+})
+
+// Handle SIGTERM
+process.on('SIGTERM', () => {
+  console.info("SIGTERM Received, exiting...")
+  process.exit(0)
+})
+
+// Handle APP ERRORS
+process.on('uncaughtException', (error, origin) => {
+    console.log('----- Uncaught exception -----')
+    console.log(error)
+    console.log('----- Exception origin -----')
+    console.log(origin)
+})
+process.on('unhandledRejection', (reason, promise) => {
+    console.log('----- Unhandled Rejection at -----')
+    console.log(promise)
+    console.log('----- Reason -----')
+    console.log(reason)
+})
+
+
 const app = express();
 const port = process.env.PORT || 3000;
-
+app.set('trust proxy', true)
 app.use(express.static("public"));
 
 app.use(function (req, res) {
@@ -44,7 +72,7 @@ class Server {
     )
       return;
     response.peerId = Peer.uuid();
-    headers.push(`Set-Cookie:peerid=${response.peerId}`);
+    headers.push(`Set-Cookie:peerid=${response.peerId};SameSite=Strict; Secure`);
   }
 
   onConnection(peer) {
@@ -164,6 +192,7 @@ class Peer {
   }
 
   setIP(request) {
+    console.log(request.connection.remoteAddress);
     if (request["x-forwarded-for"]) {
       this.ip = request.headers["x-forwarded-for"].split(/\s*,\s*/)[0];
     } else {
@@ -172,6 +201,7 @@ class Peer {
     if (this.ip == "::1" || this.ip == "::ffff:127.0.0.1") {
       this.ip = "127.0.0.1";
     }
+    console.log(this.ip,request.connection.remoteAddress)
   }
   setPeerId(request) {
     if (request.peerId) {

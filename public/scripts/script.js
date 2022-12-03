@@ -204,7 +204,8 @@ class PeerUI {
     return this.peer.name.device + "," + this.peer.name.os;
   }
   icon() {
-    const device = this.peer.name.device || this.peer.name;
+    const device = this.peer.name;
+    console.log(this.peer)
     if (device.type === "mobile") {
       return "https://res.cloudinary.com/duoe2yt88/image/upload/v1668437443/Images/mobile_qeibtw.svg";
     }
